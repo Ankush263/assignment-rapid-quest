@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const URL = `http://localhost:5000`;
+// const URL = `http://localhost:5000`;
+const URL = `https://assignment-rapid-quest.onrender.com`;
 
 const VIDEO_URL = `${URL}/api/v1/video`;
 
