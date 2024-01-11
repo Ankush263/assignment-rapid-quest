@@ -1,23 +1,41 @@
-import { useState } from 'react';
+import { Box, Flex, Grid } from '@mantine/core';
+import VideoContainer from './components/videoComponents/VideoContainer';
+import NavBar from './components/nav/NavBar';
+import { getAllVideos } from './api/index';
+import { useEffect, useState } from 'react';
+
+interface Videos {
+	_id: string;
+	video: string;
+	caption: string;
+}
 
 function App() {
-	const [count, setCount] = useState(0);
+	const [videos, setVideos] = useState<Videos[]>([]);
+	const fetch = async () => {
+		const doc = await getAllVideos();
+		setVideos(doc.data.data.video);
+	};
+
+	useEffect(() => {
+		fetch();
+	}, []);
 
 	return (
-		<>
-			<h1>Vite + React</h1>
-			<div className="card">
-				<button onClick={() => setCount((count) => count + 1)}>
-					count is {count}
-				</button>
-				<p>
-					Edit <code>src/App.tsx</code> and save to test HMR
-				</p>
-			</div>
-			<p className="read-the-docs">
-				Click on the Vite and React logos to learn more
-			</p>
-		</>
+		<Flex direction={'column'} justify={'center'} align={'center'}>
+			<NavBar />
+			<Box w={'95%'} mt={20} mb={20}>
+				<Grid>
+					{videos.map((video) => {
+						return (
+							<Grid.Col span={4} key={video._id}>
+								<VideoContainer video={video.video} caption={video.caption} />
+							</Grid.Col>
+						);
+					})}
+				</Grid>
+			</Box>
+		</Flex>
 	);
 }
 
